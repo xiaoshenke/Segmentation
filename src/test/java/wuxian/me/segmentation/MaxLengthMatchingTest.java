@@ -6,6 +6,8 @@ import org.junit.Test;
 import wuxian.me.segmentation.core.DictionaryTrie;
 import wuxian.me.segmentation.util.FileUtil;
 
+import java.util.List;
+
 /**
  * Created by wuxian on 17/12/2017.
  */
@@ -48,9 +50,46 @@ public class MaxLengthMatchingTest {
         segmentation.setDictionary(trie);
 
         cur = System.currentTimeMillis();
-        System.out.println(segmentation.seg(FileUtil.readFromFile(FileUtil.getCurrentPath() + "/article/test1.txt")));
-
+        List<String> segged = segmentation.seg(FileUtil.readFromFile(FileUtil.getCurrentPath() + "/article/test1.txt"));
+        System.out.println(segged);
         System.out.println("segmentation cost " + (System.currentTimeMillis() - cur) + " millis");
+
+        StringBuilder builder = new StringBuilder("");
+        for (String s : segged) {
+            builder.append(s);
+            builder.append(" ");
+        }
+        FileUtil.writeToFile(FileUtil.getCurrentPath() + "/article/test1_seg.txt", builder.toString());
+    }
+
+    @Test
+    public void test1() throws Exception {
+        String input = "/Users/wuxian/Desktop/in.txt";
+        String output = "/Users/wuxian/Desktop/out.txt";
+        fullSegment(input, output);
+    }
+
+
+    private void fullSegment(String inputPath, String outputPath) {
+
+        Segmentation segmentation = new MaxLengthMatching(true);
+        long cur = System.currentTimeMillis();
+        trie.initWithDefaultWords();
+        System.out.println("load dictionary cost " + (System.currentTimeMillis() - cur) + " millis");
+        segmentation.setDictionary(trie);
+
+        cur = System.currentTimeMillis();
+        List<String> segged = segmentation.seg(FileUtil.readFromFile(inputPath));
+        System.out.println(segged);
+        System.out.println("segmentation cost " + (System.currentTimeMillis() - cur) + " millis");
+
+        StringBuilder builder = new StringBuilder("");
+        for (String s : segged) {
+            builder.append(s);
+            builder.append(" ");
+        }
+        FileUtil.writeToFile(outputPath, builder.toString());
+
     }
 
     @Test

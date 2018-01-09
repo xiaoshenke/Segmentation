@@ -1,8 +1,6 @@
 package wuxian.me.segmentation;
 
 import com.sun.istack.internal.Nullable;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import wuxian.me.segmentation.core.Dictionary;
 import wuxian.me.segmentation.util.PunctuationUtil;
 import wuxian.me.segmentation.util.StopWordUtil;
@@ -15,8 +13,6 @@ import java.util.Stack;
  * Created by wuxian on 16/12/2017.
  */
 public abstract class BaseSegmentation implements Segmentation {
-
-    protected final Logger LOGGER = LoggerFactory.getLogger(getClass());
 
     private boolean keepWhitespace = false;
     private boolean caseSensetive = false;
@@ -54,7 +50,6 @@ public abstract class BaseSegmentation implements Segmentation {
 
     //分词时截取的字符串的最大长度
     public int getInterceptLength() {
-
         /*
         if (getDictionary().getMaxLength() > maxLength) {  //这样会严重影响效率
             return getDictionary().getMaxLength();
