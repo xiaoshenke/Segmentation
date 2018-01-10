@@ -70,6 +70,23 @@ public class MaxLengthMatchingTest {
         fullSegment(input, output);
     }
 
+    @Test
+    public void test2() throws Exception {
+
+        Segmentation segmentation = new MaxLengthMatching(true);
+        long cur = System.currentTimeMillis();
+        trie.initWithDefaultWords();
+        System.out.println("load dictionary cost " + (System.currentTimeMillis() - cur) + " millis");
+        segmentation.setDictionary(trie);
+
+        cur = System.currentTimeMillis();
+        List<String> segged = segmentation.seg(FileUtil.readFromFile(FileUtil.getCurrentPath() + "/article/test2.txt"));
+        System.out.println(segged);
+        System.out.println("segmentation cost " + (System.currentTimeMillis() - cur) + " millis");
+
+
+    }
+
 
     private void fullSegment(String inputPath, String outputPath) {
 

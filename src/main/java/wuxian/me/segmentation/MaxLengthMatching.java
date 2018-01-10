@@ -1,6 +1,7 @@
 package wuxian.me.segmentation;
 
 
+import wuxian.me.segmentation.util.EnglishRecogUtil;
 import wuxian.me.segmentation.util.RecognitionUtil;
 
 import java.util.ArrayList;
@@ -29,16 +30,23 @@ public class MaxLengthMatching extends BaseSegmentation {
         int len = getInterceptLength();
         int start = 0;
         while (start < textLen) {
-            if (len > textLen - start) {
-                len = textLen - start;
-            }
-            while (!getDictionary().contains(text, start, len) && !RecognitionUtil.recog(text, start, len)) {
-                if (len == 1) {
-                    break;
+
+            int elen = 0;
+            if ((elen = EnglishRecogUtil.recLen(text, start)) != -1) {
+                len = elen;
+            } else {
+                if (len > textLen - start) {
+                    len = textLen - start;
                 }
-                len--;
+                while (!getDictionary().contains(text, start, len) && !RecognitionUtil.recog(text, start, len)) {
+                    if (len == 1) {
+                        break;
+                    }
+                    len--;
+                }
+                len = getLenForOppoDirection(text, start, len, getInterceptLength());
             }
-            len = getLen(text, start, len, getInterceptLength());
+
             addToCuttedList(result, text, start, len);
             start += len;
             len = getInterceptLength();
@@ -47,7 +55,7 @@ public class MaxLengthMatching extends BaseSegmentation {
     }
 
     //若originLen=interceptLen,那么往len变大的方向尝试 看看能不能继续以更大的len进行分词 解决了单词长度最大为@getInterceptLength()的bug
-    private int getLen(String text, int start, int originLen, int interceptLen) {
+    private int getLenForOppoDirection(String text, int start, int originLen, int interceptLen) {
         if (originLen < interceptLen) {
             return originLen;
         }
