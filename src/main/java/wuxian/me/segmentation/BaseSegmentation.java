@@ -1,6 +1,5 @@
 package wuxian.me.segmentation;
 
-import com.sun.istack.internal.Nullable;
 import wuxian.me.segmentation.core.Dictionary;
 import wuxian.me.segmentation.util.PunctuationUtil;
 import wuxian.me.segmentation.util.StopWordUtil;
@@ -45,7 +44,6 @@ public abstract class BaseSegmentation implements Segmentation {
         return dictionary;
     }
 
-    @Nullable
     protected abstract List<String> segImpl(String text);
 
     //分词时截取的字符串的最大长度
@@ -58,8 +56,10 @@ public abstract class BaseSegmentation implements Segmentation {
         return maxLength;
     }
 
-    @Override
     public List<String> seg(String text) {
+        if (text == null || text.length() == 0) {
+            return new ArrayList<>(0);
+        }
         List<String> sentences = PunctuationUtil.seg(text, keepPunctutaion); //1:先按标点进行句子分割。
         if (sentences.size() == 1) {
             return segSingleSentence(sentences.get(0));
@@ -81,7 +81,6 @@ public abstract class BaseSegmentation implements Segmentation {
         return resultList;
     }
 
-    @Nullable
     private List<String> segSingleSentence(final String sentence) {
         if (sentence.length() == 1) {
             if (keepWhitespace) {
@@ -115,7 +114,6 @@ public abstract class BaseSegmentation implements Segmentation {
         }
     }
 
-    @Nullable
     protected String getWord(String text, int start, int len) {
         if (len < 1) {
             return null;

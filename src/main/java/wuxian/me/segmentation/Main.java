@@ -32,7 +32,7 @@ public class Main {
         File file = null;
         file = new File(str);
 
-        if (!file.exists() || !file.isFile()) {
+        if (file.exists() && file.isFile()) {
             isFile = true;
         }
 
@@ -49,13 +49,12 @@ public class Main {
         long cur = System.nanoTime();
         DictionaryTrie trie = DictionaryTrie.getIns();
         trie.initWithDefaultWords();
-        System.out.println("load dictionary cost " + (System.nanoTime() - cur) / 1000 + " millis");
+        System.out.println("load dictionary cost " + (System.nanoTime() - cur) / 1000000 + " millis");
         segmentation.setDictionary(trie);
 
         cur = System.nanoTime();
         List<String> segged = segmentation.seg(content);
-        System.out.println(segged);
-        System.out.println("segmentation cost " + (System.nanoTime() - cur) / 1000 + " millis");
+        System.out.println("segmentation cost " + (System.nanoTime() - cur) / 1000000 + " millis");
 
         StringBuilder builder = new StringBuilder("");
         for (String s : segged) {

@@ -82,6 +82,9 @@ public class PunctuationUtil {
         }
 
         List<String> list = new ArrayList<>();
+        if (text == null || text.length() == 0) {
+            return list;
+        }
         int start = 0;
         char[] array = text.toCharArray();
         int len = array.length;
