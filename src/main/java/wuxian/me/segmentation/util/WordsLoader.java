@@ -36,11 +36,11 @@ public class WordsLoader {
     public static List<String> loadByPaths(String resourcePaths) {
         resourcePaths = resourcePaths.trim();
         if ("".equals(resourcePaths)) {
-            LOGGER.info("没有资源可以加载");
+            //System.out.println("没有资源可以加载");
             return new ArrayList<>(0);
         }
-        LOGGER.info("开始加载资源");
-        LOGGER.info(resourcePaths);
+        //System.out.println("开始加载资源");
+        //System.out.println(resourcePaths);
         long start = System.currentTimeMillis();
         List<String> result = new ArrayList<>();
         for (String resource : resourcePaths.split("[,，]")) {
@@ -53,22 +53,23 @@ public class WordsLoader {
                 LOGGER.error("加载资源失败：" + resource, e);
             }
         }
-        LOGGER.info("加载资源 " + result.size() + " 行");
+        //System.out.println("加载资源 " + result.size() + " 行");
         //调用自定义加载逻辑
         long cost = System.currentTimeMillis() - start;
-        LOGGER.info("完成加载资源，耗时" + cost + " 毫秒");
+        //System.out.println("完成加载资源，耗时" + cost + " 毫秒");
         return result;
     }
 
 
     private static List<String> loadClasspathResource(String resource) throws IOException {
         List<String> result = new ArrayList<>();
-        LOGGER.info("类路径资源：" + resource);
+        //System.out.println("类路径资源：" + resource);
         Enumeration<URL> ps = WordsLoader.class.getClassLoader().getResources(resource);
         while (ps.hasMoreElements()) {
             URL url = ps.nextElement();
-            LOGGER.info("类路径资源URL：" + url);
+            //System.out.println("类路径资源URL：" + url);
             if (url.getFile().contains(".jar!")) {
+                result.addAll(load("classpath:" + resource));  //必须加这行代码 用于加载打包到jar里的资源
                 continue;
             }
             File file = new File(url.getFile());
@@ -89,7 +90,7 @@ public class WordsLoader {
         List<String> result = new ArrayList<>();
         try {
             InputStream in = null;
-            LOGGER.info("加载资源：" + path);
+            //System.out.println("加载资源：" + path);
             if (path.startsWith("classpath:")) {
                 in = WordsLoader.class.getClassLoader().getResourceAsStream(path.replace("classpath:", ""));
             } else {

@@ -320,9 +320,9 @@ public class DictionaryTrie implements Dictionary {
 
     private synchronized void show(TrieNode node, String indent) {
         if (node.isTerminal()) {
-            LOGGER.info(indent + node.getCharacter() + "(T)");
+            System.out.println(indent + node.getCharacter() + "(T)");
         } else {
-            LOGGER.info(indent + node.getCharacter());
+            System.out.println(indent + node.getCharacter());
         }
         for (TrieNode item : node.getChildren()) {
             show(item, indent + "\t");

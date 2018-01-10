@@ -49,6 +49,7 @@ public class Main {
         long cur = System.nanoTime();
         DictionaryTrie trie = DictionaryTrie.getIns();
         trie.initWithDefaultWords();
+        //trie.show();
         System.out.println("load dictionary cost " + (System.nanoTime() - cur) / 1000000 + " millis");
         segmentation.setDictionary(trie);
 

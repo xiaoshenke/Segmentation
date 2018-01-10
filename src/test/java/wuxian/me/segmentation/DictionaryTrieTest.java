@@ -26,6 +26,11 @@ public class DictionaryTrieTest {
     }
 
     @Test
+    public void testShow() {
+        trie.show();
+    }
+
+    @Test
     public void testPrefix() {
         String prefix = "上";
         List<String> result = trie.prefix(prefix);
