@@ -1,5 +1,6 @@
 package wuxian.me.segmentation;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import wuxian.me.segmentation.core.DictionaryTrie;
@@ -23,6 +24,13 @@ public class DictionaryTrieTest {
         trie.add("上学");
         trie.add("上学校");
         trie.add("上海");
+    }
+
+    @Test
+    public void testAutoLoad() {
+
+        trie.initWithDefaultWords();
+        Assert.assertTrue(trie.contains("天亮了"));
     }
 
     @Test

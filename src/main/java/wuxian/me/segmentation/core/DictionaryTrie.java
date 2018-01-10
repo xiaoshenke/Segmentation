@@ -2,8 +2,10 @@ package wuxian.me.segmentation.core;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import wuxian.me.segmentation.util.FileUtil;
 import wuxian.me.segmentation.util.WordsLoader;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -31,8 +33,22 @@ public class DictionaryTrie implements Dictionary {
         return dictionaryTrie;
     }
 
+    //加载本文件夹下 所有以dic.txt结尾的文件 比如name-word.txt
     public void initWithDefaultWords() {
         addAll(WordsLoader.loadWords());
+
+        File file = new File(FileUtil.getCurrentPath());
+        if (file.isDirectory()) {
+            File[] files = file.listFiles();
+            for (File f : files) {
+                if (f.isFile() && f.getName().endsWith("dic.txt")) {
+
+                    LOGGER.debug("load dic: " + f.getAbsolutePath());
+                    addAll(WordsLoader.load(f.getAbsolutePath()));
+                }
+            }
+
+        }
     }
 
     private DictionaryTrie() {
@@ -320,9 +336,9 @@ public class DictionaryTrie implements Dictionary {
 
     private synchronized void show(TrieNode node, String indent) {
         if (node.isTerminal()) {
-            System.out.println(indent + node.getCharacter() + "(T)");
+            LOGGER.info(indent + node.getCharacter() + "(T)");
         } else {
-            System.out.println(indent + node.getCharacter());
+            LOGGER.info(indent + node.getCharacter());
         }
         for (TrieNode item : node.getChildren()) {
             show(item, indent + "\t");

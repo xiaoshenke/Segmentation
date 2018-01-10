@@ -1,17 +1,31 @@
 package wuxian.me.segmentation;
 
+import org.apache.log4j.PropertyConfigurator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import wuxian.me.segmentation.core.DictionaryTrie;
 import wuxian.me.segmentation.util.FileUtil;
 
 import java.io.File;
 import java.util.List;
+import java.util.Properties;
 
 /**
  * Created by wuxian on 31/12/2017.
  */
 public class Main {
+    static Logger LOGGER = LoggerFactory.getLogger(Main.class);
+
+    //若路径/conf/log4j.properties存在,那么重新初始化log4j
+    private static void mayReinitLog4j() {
+        File file = new File(FileUtil.getCurrentPath() + "/conf/log4j.properties");
+        if (file.exists() && file.isFile()) {
+            PropertyConfigurator.configure(file.getAbsolutePath());
+        }
+    }
 
     public static void main(String[] args) throws Exception {
+        mayReinitLog4j();
 
         if (args == null || args.length < 1) {
             throw new IllegalArgumentException(
@@ -50,12 +64,12 @@ public class Main {
         DictionaryTrie trie = DictionaryTrie.getIns();
         trie.initWithDefaultWords();
         //trie.show();
-        System.out.println("load dictionary cost " + (System.nanoTime() - cur) / 1000000 + " millis");
+        LOGGER.info("load dictionary cost " + (System.nanoTime() - cur) / 1000000 + " millis");
         segmentation.setDictionary(trie);
 
         cur = System.nanoTime();
         List<String> segged = segmentation.seg(content);
-        System.out.println("segmentation cost " + (System.nanoTime() - cur) / 1000000 + " millis");
+        LOGGER.info("segmentation cost " + (System.nanoTime() - cur) / 1000000 + " millis");
 
         StringBuilder builder = new StringBuilder("");
         for (String s : segged) {
@@ -66,8 +80,8 @@ public class Main {
         if (output != null) {
             FileUtil.writeToFile(output, builder.toString());
         } else {
-            System.out.println("--------------------- result ---------------------");
-            System.out.println(builder.toString());
+            LOGGER.info("--------------------- result ---------------------");
+            LOGGER.info(builder.toString());
         }
 
     }

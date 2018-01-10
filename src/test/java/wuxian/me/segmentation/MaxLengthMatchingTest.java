@@ -1,8 +1,9 @@
 package wuxian.me.segmentation;
 
-import org.apache.log4j.varia.NullAppender;
 import org.junit.Before;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import wuxian.me.segmentation.core.DictionaryTrie;
 import wuxian.me.segmentation.util.FileUtil;
 
@@ -13,9 +14,7 @@ import java.util.List;
  */
 public class MaxLengthMatchingTest {
 
-    static {
-        org.apache.log4j.BasicConfigurator.configure(new NullAppender());
-    }
+    static Logger LOGGER = LoggerFactory.getLogger(MaxLengthMatching.class);
 
     DictionaryTrie trie = DictionaryTrie.getIns();
 
@@ -39,6 +38,8 @@ public class MaxLengthMatchingTest {
         Segmentation seg = new MaxLengthMatching(true);
         seg.setDictionary(trie);
         System.out.println(seg.seg(test));
+
+        LOGGER.info(test);
     }
 
     @Test
